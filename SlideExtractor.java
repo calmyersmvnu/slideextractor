@@ -10,12 +10,14 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.util.*;
 
 // for some reason I cannot directly access Rectangle2D.Double with import
 import java.awt.geom.*;
 
 public class SlideExtractor {
 	public static void usage() {
+		System.out.println("Team 3 says hello world!");
 		System.out.println("Usage: slideextractor <filename> <output_image_format>");
 	}
 
@@ -46,12 +48,27 @@ public class SlideExtractor {
 			throw new IllegalArgumentException("Invalid output format" + output_image_format);
 		}
 
+		System.out.println("Enter 'w' for white slides or 'b' for black slides: ");
+		Scanner keyboard = new Scanner(System.in);
+		String colorInput = keyboard.next();
+		Color colorResult;
+		if (colorInput.equals("w")){
+			colorResult = Color.white;
+		}
+		else if (colorInput.equals("b")){
+			colorResult = Color.black;
+		}
+		else {
+			System.out.println("Did you even pay attention? Using a random color...");
+			colorResult = Color.red;
+		}
+
 		for (XSLFSlide slide : pptx.getSlides()) {
 			BufferedImage img = new BufferedImage(pgsize.width, pgsize.height, BufferedImage.TYPE_INT_RGB);
 			Graphics2D graphics = img.createGraphics();
 			
 			// clear the drawing area
-		    graphics.setPaint(Color.white);
+		    graphics.setPaint(colorResult);
 		    graphics.fill(new Rectangle2D.Double(0, 0, pgsize.width, pgsize.height));
 
 			//render
